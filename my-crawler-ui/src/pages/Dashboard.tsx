@@ -8,9 +8,9 @@ import {
   Table,
   Badge,
   HStack,
-  Checkbox, // Import Checkbox
-  Flex, // Import Flex for layout
-  Spinner, // Import Spinner for loading states
+  Checkbox, 
+  Flex, 
+  Spinner, 
   InputGroup, InputElement, ActionBar, ButtonGroup,
   IconButton,
   Stack,
@@ -43,7 +43,7 @@ interface URLAnalysisResult {
   InternalLinks: number;
   ExternalLinks: number;
   InaccessibleLinks: number;
-  InaccessibleLinkDetails: string; // JSON string
+  InaccessibleLinkDetails: string; 
   HasLoginForm: boolean;
   ErrorMessage: string;
   CreatedAt: string;
@@ -68,7 +68,6 @@ const reRunAnalyses = async (ids: number[]) => {
 };
 
 const deleteURLs = async (ids: number[]) => {
-  // Using POST for batch delete, as DELETE with body is less standard
   const { data } = await axios.post(`${API_BASE_URL}urls/delete-batch`, { ids });
   return data;
 };
@@ -89,7 +88,7 @@ function Dashboard() {
   const { data: urls, isLoading, isError, error, isFetching } = useQuery<URLAnalysisResult[]>({
     queryKey: ['urls'],
     queryFn: fetchURLs,
-    refetchInterval: 5000, // Refetch every 5 seconds to update status (real-time progress)
+    refetchInterval: 5000, 
   });
 
   const addURLMutation = useMutation({

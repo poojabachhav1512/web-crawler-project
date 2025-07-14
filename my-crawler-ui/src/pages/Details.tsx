@@ -22,7 +22,6 @@ import {
   Legend,
   Tooltip,
 } from 'recharts';
-import { Toaster } from '../components/ui/toaster';
 
 interface URLAnalysisResult {
   ID: number;

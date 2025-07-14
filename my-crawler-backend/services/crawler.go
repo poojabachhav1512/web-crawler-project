@@ -19,7 +19,6 @@ type BrokenLink struct {
 	StatusCode int    `json:"statusCode"`
 }
 
-// ProcessURL asynchronously. This will be called from a Go routine.
 func ProcessURL(urlAnalysisID uint) {
 	var urlAnalysis models.URLAnalysisResult
 	result := initializers.DB.First(&urlAnalysis, urlAnalysisID)
@@ -30,9 +29,6 @@ func ProcessURL(urlAnalysisID uint) {
 
 	urlAnalysis.Status = "running"
 	initializers.DB.Save(&urlAnalysis)
-
-	// Simulate work and errors
-	// time.Sleep(5 * time.Second)
 
 	data, err := CrawlURL(urlAnalysis.URL)
 	if err != nil {
@@ -96,8 +92,6 @@ func CrawlURL(url string) (*CrawlResult, error) {
 	}
 
 	result := &CrawlResult{}
-
-	// HTML Version (basic detection based on doctype)
 	htmlNode := doc.Find("html").First()
 	if htmlNode.Length() > 0 {
 		if strings.Contains(strings.ToLower(doc.Nodes[0].FirstChild.Data), "html public") {
@@ -166,8 +160,7 @@ func CrawlURL(url string) (*CrawlResult, error) {
 	}
 	close(linkChan)
 
-	// Check for login form (basic check for form with password field)
-	result.HasLoginForm = doc.Find("input[type='email']").Length() > 0
+	result.HasLoginForm = doc.Find("input[type='password']").Length() > 0
 
 	return result, nil
 }

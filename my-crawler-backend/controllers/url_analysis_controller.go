@@ -45,7 +45,6 @@ func CreateURLAnalysis(c *gin.Context) {
 		return
 	}
 
-	// Start the crawling process in a goroutine
 	go services.ProcessURL(urlAnalysis.ID)
 
 	c.JSON(http.StatusAccepted, gin.H{"message": "URL added and processing started", "data": urlAnalysis})
@@ -77,7 +76,6 @@ func RerunURLAnalyses(c *gin.Context) {
 	}
 
 	var urls []models.URLAnalysisResult
-	// Find the URLs by their IDs
 	result := initializers.DB.Find(&urls, input.IDs)
 	if result.Error != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to find URLs for re-run", "details": result.Error.Error()})
@@ -91,7 +89,6 @@ func RerunURLAnalyses(c *gin.Context) {
 
 	// Update status and re-trigger processing for each selected URL
 	for _, url := range urls {
-		// Only re-queue if it's not already running or queued
 		if url.Status != "running" && url.Status != "queued" {
 			url.Status = "queued" // Reset status to queued for re-processing
 			url.ErrorMessage = "" // Clear any previous error message
